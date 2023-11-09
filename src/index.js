@@ -72,7 +72,7 @@ app.delete("/eliminar", (req, res) => {
   try {
     const { id } = req.body;
     database(
-      "CALL eliminar-imagen(?);",
+      "CALL eliminarImagen(?);",
       (result) => {
         if (result)
           res.json({
