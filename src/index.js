@@ -29,8 +29,27 @@ app.post("/ingresar", (req, res) => {
   }
 });
 
-app.get("/registrarse", (req, res) => {
-  res.send("Hello World!");
+app.post("/registrarse", (req, res) => {
+  try {
+    const { nombres, apellidos, email, telefono, contrasena } = req.body;
+    database("CALL registro(?, ?, ?, ?, ?);", (result) => {
+      if (result) {
+        res.json(result);
+      } else {
+        res.status(500).json({
+          message: "Email ya registrado !",
+        });
+      }
+
+    }, [nombres, apellidos, email, telefono, contrasena]);
+
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      message: error.messege,
+      error,
+    }); 
+  }
 });
 
 app.get("/images", (req, res) => {
