@@ -66,10 +66,10 @@ app.get("/images", (req, res) => {
 
 app.post("/insertar", (req, res) => {
   try {
-    const { categoria, blob, existencias, descripcion } = req.body;
+    const { categoria, blob, existencias, descripcion, precio } = req.body;
     console.log(categoria, blob);
     database(
-      "CALL insertarImage(?,?,?,?);",
+      "CALL insertarImage(?,?,?,?,?);",
       (result) => {
         console.log("Result: ->", result);
         if (result)
@@ -77,7 +77,7 @@ app.post("/insertar", (req, res) => {
             message: "Imagen guardada",
           });
       },
-      [categoria, blob, existencias, descripcion]
+      [categoria, blob, existencias, descripcion, precio]
     );
   } catch (error) {
     res.status(500).json({
@@ -129,16 +129,16 @@ app.post("/actualizar", (req, res) => {
 
 app.post("/descripcion", (req, res) => {
   try {
-    const { id, descripcion } = req.body;
+    const { id, descripcion, precio } = req.body;
     database(
-      "CALL actualizarDescripcion(?, ?);",
+      "CALL actualizarDescripcion(?, ?, ?);",
       (result) => {
         if (result)
           res.json({
             message: "Descripcion Actualizada",
           });
       },
-      [id, descripcion]
+      [id, descripcion, precio]
     );
   } catch (error) {
     res.status(500).json({
