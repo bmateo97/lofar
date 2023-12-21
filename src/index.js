@@ -64,20 +64,30 @@ app.get("/images", (req, res) => {
   }
 });
 
+app.get("/getpanel", (req, res) => {
+  try {
+    database("CALL getPanel();", (result) => {
+      if (result) return res.json(result);
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: "Error al obtener el panel",
+    });
+  }
+});
+
 app.post("/insertar", (req, res) => {
   try {
-    const { categoria, blob, existencias, descripcion, precio } = req.body;
-    console.log(categoria, blob);
+    const { categoria, blob, existencias, descripcion, precio, genero } = req.body;
     database(
-      "CALL insertarImage(?,?,?,?,?);",
+      "CALL insertarImage(?,?,?,?,?,?);",
       (result) => {
-        console.log("Result: ->", result);
         if (result)
           res.json({
             message: "Imagen guardada",
           });
       },
-      [categoria, blob, existencias, descripcion, precio]
+      [categoria, blob, existencias, descripcion, precio, genero]
     );
   } catch (error) {
     res.status(500).json({
@@ -143,6 +153,26 @@ app.post("/descripcion", (req, res) => {
   } catch (error) {
     res.status(500).json({
       message: "Error actualizando descripcion",
+    });
+  }
+});
+
+app.post("/panel", (req, res) => {
+  try {
+    const { url, title } = req.body;
+    database(
+      "CALL panel(?, ?);",
+      (result) => {
+        if (result)
+          res.json({
+            message: "Descripcion Actualizada",
+          });
+      },
+      [url, title]
+    );
+  } catch (error) {
+    res.status(500).json({
+      message: "Error actualizando panel",
     });
   }
 });
