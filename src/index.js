@@ -29,8 +29,27 @@ app.post("/ingresar", (req, res) => {
   }
 });
 
-app.get("/registrarse", (req, res) => {
-  res.send("Hello World!");
+app.post("/registrarse", (req, res) => {
+  try {
+    const { nombres, apellidos, email, telefono, contrasena } = req.body;
+    database("CALL registro(?, ?, ?, ?, ?);", (result) => {
+      if (result) {
+        res.json(result);
+      } else {
+        res.status(500).json({
+          message: "Email ya registrado !",
+        });
+      }
+
+    }, [nombres, apellidos, email, telefono, contrasena]);
+
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      message: error.messege,
+      error,
+    }); 
+  }
 });
 
 app.get("/images", (req, res) => {
@@ -45,20 +64,30 @@ app.get("/images", (req, res) => {
   }
 });
 
+app.get("/getpanel", (req, res) => {
+  try {
+    database("CALL getPanel();", (result) => {
+      if (result) return res.json(result);
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: "Error al obtener el panel",
+    });
+  }
+});
+
 app.post("/insertar", (req, res) => {
   try {
-    const { categoria, blob } = req.body;
-    console.log(categoria, blob);
+    const { categoria, blob, existencias, descripcion, precio, genero } = req.body;
     database(
-      "CALL insertarImage(?,?);",
+      "CALL insertarImage(?,?,?,?,?,?);",
       (result) => {
-        console.log("Result: ->", result);
         if (result)
           res.json({
             message: "Imagen guardada",
           });
       },
-      [categoria, blob]
+      [categoria, blob, existencias, descripcion, precio, genero]
     );
   } catch (error) {
     res.status(500).json({
@@ -72,7 +101,7 @@ app.delete("/eliminar", (req, res) => {
   try {
     const { id } = req.body;
     database(
-      "CALL eliminar-imagen(?);",
+      "CALL eliminarImagen(?);",
       (result) => {
         if (result)
           res.json({
@@ -84,6 +113,66 @@ app.delete("/eliminar", (req, res) => {
   } catch (error) {
     res.status(500).json({
       message: "Error eliminando imagen",
+    });
+  }
+});
+
+app.post("/actualizar", (req, res) => {
+  try {
+    const { id, existencias } = req.body;
+    database(
+      "CALL actualizarExistencias(?, ?);",
+      (result) => {
+        if (result)
+          res.json({
+            message: "Existencias Actualizadas",
+          });
+      },
+      [id, existencias]
+    );
+  } catch (error) {
+    res.status(500).json({
+      message: "Error actualizando existencias",
+    });
+  }
+});
+
+app.post("/descripcion", (req, res) => {
+  try {
+    const { id, descripcion, precio } = req.body;
+    database(
+      "CALL actualizarDescripcion(?, ?, ?);",
+      (result) => {
+        if (result)
+          res.json({
+            message: "Descripcion Actualizada",
+          });
+      },
+      [id, descripcion, precio]
+    );
+  } catch (error) {
+    res.status(500).json({
+      message: "Error actualizando descripcion",
+    });
+  }
+});
+
+app.post("/panel", (req, res) => {
+  try {
+    const { url, title } = req.body;
+    database(
+      "CALL panel(?, ?);",
+      (result) => {
+        if (result)
+          res.json({
+            message: "Descripcion Actualizada",
+          });
+      },
+      [url, title]
+    );
+  } catch (error) {
+    res.status(500).json({
+      message: "Error actualizando panel",
     });
   }
 });
