@@ -232,6 +232,18 @@ app.get("/historial", async (req, res) => {
   }
 });
 
+app.get("/usuarios", async (req, res) => {
+  try {
+    database("CALL usuarios();", (result) => {
+      if (result) return res.json(result[0]);
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: "Error al obtener los usuarios",
+    });
+  }
+});
+
 app.listen(3000, () => {
   console.log("Example app listening on port 3000!");
 });
