@@ -197,9 +197,29 @@ app.post("/comprar", (req, res) => {
   }
 });
 
-app.get("*", (req, res) => {
-  res.send("Not Found !");
+app.get("/email/:address", async (req, res) => {
+  // send email with nodemailer
+  const address = req.params.address;
+  const nodemailer = require("nodemailer");
+  const transporter = nodemailer.createTransport({
+    host: "smtp.gmail.com",
+    port: 587,
+    auth: {
+      user: "josepadre30@gmail.com",
+      pass: "ynijbmgzzcusrhno",
+    }
+  });
+  const mailOptions = {
+    from: "Lofar Joyeria",
+    to: address,
+    subject: "Compra realizada exitosamente",
+    text: "Gracias por su compra, esperamos que disfrute sus productos.",
+  };
+
+  const res = await transporter.sendMail(mailOptions);
+
 });
+
 
 app.listen(3000, () => {
   console.log("Example app listening on port 3000!");
