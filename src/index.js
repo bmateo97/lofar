@@ -216,8 +216,8 @@ app.get("/email/:address", async (req, res) => {
     text: "Gracias por su compra, esperamos que disfrute sus productos.",
   };
 
-  const res = await transporter.sendMail(mailOptions);
-
+  const response = await transporter.sendMail(mailOptions);
+  console.log(response);
 });
 
 
