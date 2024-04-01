@@ -2,6 +2,7 @@ const express = require("express");
 const database = require("./Utils/database.js");
 const cors = require("cors");
 const app = express();
+const nodemailer = require("nodemailer");
 
 app.use(cors());
 app.use(express.json({ limit: "16mb" }));
@@ -200,7 +201,6 @@ app.post("/comprar", (req, res) => {
 app.get("/email/:address", async (req, res) => {
   // send email with nodemailer
   const address = req.params.address;
-  const nodemailer = require("nodemailer");
   const transporter = nodemailer.createTransport({
     host: "smtp.gmail.com",
     port: 587,
