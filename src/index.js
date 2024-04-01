@@ -220,6 +220,17 @@ app.get("/email/:address", async (req, res) => {
   res.json(response);
 });
 
+app.get("/historial", async (req, res) => {
+  try {
+    database("CALL historial();", (result) => {
+      if (result) return res.json(result);
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: "Error al obtener el historial",
+    });
+  }
+});
 
 app.listen(3000, () => {
   console.log("Example app listening on port 3000!");
