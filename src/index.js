@@ -217,7 +217,7 @@ app.get("/email/:address", async (req, res) => {
   };
 
   const response = await transporter.sendMail(mailOptions);
-  console.log(response);
+  res.json(response);
 });
 
 
