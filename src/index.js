@@ -223,7 +223,7 @@ app.get("/email/:address", async (req, res) => {
 app.get("/historial", async (req, res) => {
   try {
     database("CALL historial();", (result) => {
-      if (result) return res.json(result);
+      if (result) return res.json(result[0]);
     });
   } catch (error) {
     res.status(500).json({
