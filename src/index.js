@@ -177,10 +177,30 @@ app.post("/panel", (req, res) => {
   }
 });
 
+app.post("/comprar", (req, res) => {
+  try {
+    const { id, cantidad } = req.body;
+    database(
+      "CALL comprar(?, ?);",
+      (result) => {
+        if (result)
+          res.json({
+            message: "Compra realizada",
+          });
+      },
+      [id, cantidad]
+    );
+  } catch (error) {
+    res.status(500).json({
+      message: "Error realizando compra",
+    });
+  }
+});
+
 app.get("*", (req, res) => {
   res.send("Not Found !");
 });
 
-app.listen(3000, () => {
-  console.log("Example app listening on port 3000!");
+app.listen(3001, () => {
+  console.log("Example app listening on port 3001!");
 });
