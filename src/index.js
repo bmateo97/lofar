@@ -198,9 +198,10 @@ app.post("/comprar", (req, res) => {
   }
 });
 
-app.get("/email/:address", async (req, res) => {
+app.post("/email/:address", async (req, res) => {
   // send email with nodemailer
   const address = req.params.address;
+  const { nombre, total, productos } = req.body;
   const transporter = nodemailer.createTransport({
     host: "smtp.gmail.com",
     port: 587,
@@ -216,8 +217,20 @@ app.get("/email/:address", async (req, res) => {
     text: "Gracias por su compra, esperamos que disfrute sus productos.",
   };
 
-  const response = await transporter.sendMail(mailOptions);
-  res.json(response);
+  const mailOptions2 = {
+    from: "Lofar Joyeria",
+    to: "joyas_lofar@hotmail.com",
+    subject: "Pedido pendiente de envio",
+    text: `El usuario con el correo " + address + " ha realizado una compra. Por favor, enviar el pedido lo antes posible.
+      Lista de productos:
+      ${productos}
+      Total: ${total}
+    `,
+  };
+
+  const response1 = await transporter.sendMail(mailOptions);
+  const response2 = await transporter.sendMail(mailOptions2);
+  res.json(response1);
 });
 
 app.get("/historial", async (req, res) => {
