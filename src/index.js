@@ -224,7 +224,7 @@ app.post("/email/:address", async (req, res) => {
     html: `
       <p>El usuario con el correo ${address} ha realizado una compra. Por favor, enviar el pedido lo antes posible.</p>
       <p>Lista de productos:</p>
-      ${productos.map((producto) => `${producto.cantidad} <img src="${producto.blob}" alt="imagen" width="100" height="100" /><br/>`)}
+      ${productos.map((producto) => `${producto.cantidad} <img src="${producto.blob}" alt="imagen" width="100" height="100" /><br/>`).jon(",")}
       <p>Total: ${total}</p>
     `,
   };
