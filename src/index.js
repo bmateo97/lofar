@@ -224,7 +224,7 @@ app.post("/email/:address", async (req, res) => {
     html: `
       <p>El usuario con el correo ${address} ha realizado una compra. Por favor, enviar el pedido lo antes posible.</p>
       <p>Lista de productos:</p>
-      <img src="data:image/jpeg;base64,${productos[0].blob}" alt="imagen" width="100" height="100">
+      <img src="${productos[0].blob}" alt="imagen" width="100" height="100">
       <p>Total: ${total}</p>
     `,
   };
