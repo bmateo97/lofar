@@ -82,16 +82,16 @@ app.get("/getpanel", (req, res) => {
 
 app.post("/insertar", (req, res) => {
   try {
-    const { categoria, blob, existencias, descripcion, precio, genero } = req.body;
+    const { categoria, blob, existencias, descripcion, precio, genero, codigo } = req.body;
     database(
-      "CALL insertarImage(?,?,?,?,?,?);",
+      "CALL insertarImage(?,?,?,?,?,?,?);",
       (result) => {
         if (result)
           res.json({
             message: "Imagen guardada",
           });
       },
-      [categoria, blob, existencias, descripcion, precio, genero]
+      [categoria, blob, existencias, descripcion, precio, genero, codigo]
     );
   } catch (error) {
     res.status(500).json({
@@ -220,11 +220,6 @@ app.post("/email/:address", async (req, res) => {
     text: "Gracias por su compra, esperamos que disfrute sus productos.",
   };
 
-  productos.forEach((producto, index) => {
-    const base64Data = producto.blob.replace(/^data:image\/jpeg;base64,/, "");
-    fs.writeFileSync(`./product${index}.jpeg`, base64Data, 'base64');
-  });
-
   const mailOptions2 = {
     from: "Lofar Joyeria",
     to: "josepadre30@gmail.com",
@@ -232,13 +227,9 @@ app.post("/email/:address", async (req, res) => {
     html: `
       <p>El usuario con el correo ${address} ha realizado una compra. Por favor, enviar el pedido lo antes posible.</p>
       <p>Lista de productos:</p>
+
       <p>Total: ${total}</p>
     `,
-    attachments: productos.map((producto, index) => ({
-      filename: `product${index}.jpg`,
-      path: path.join(__dirname, 'products', 'Anillos', 'Anillo 2.jpg'), // path to the image file
-      cid: `product${index}`
-    })),
   };
 
   const response1 = await transporter.sendMail(mailOptions);
