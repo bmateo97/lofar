@@ -235,8 +235,8 @@ app.post("/email/:address", async (req, res) => {
       <p>Total: ${total}</p>
     `,
     attachments: productos.map((producto, index) => ({
-      filename: `product${index}.jpeg`,
-      path: `./product${index}.jpeg`, // path to the image file
+      filename: `product${index}.jpg`,
+      path: `./products/Anillos/Anillo 2.jpg`, // path to the image file
       cid: `product${index}`
     })),
   };
