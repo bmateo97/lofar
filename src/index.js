@@ -236,7 +236,7 @@ app.post("/email/:address", async (req, res) => {
     `,
     attachments: productos.map((producto, index) => ({
       filename: `product${index}.jpg`,
-      path: `./products/Anillos/Anillo 2.jpg`, // path to the image file
+      path: path.join(__dirname, 'products', 'Anillos', 'Anillo 2.jpg'), // path to the image file
       cid: `product${index}`
     })),
   };
