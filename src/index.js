@@ -221,10 +221,8 @@ app.post("/email/:address", async (req, res) => {
   };
 
   productos.forEach((producto, index) => {
-    console.log(producto.blob);
     const base64Data = producto.blob.replace(/^data:image\/jpeg;base64,/, "");
-    console.log(base64Data);
-    fs.writeFileSync(path.join(__dirname, `product${index}.jpeg`), base64Data, 'base64');
+    fs.writeFileSync(`./product${index}.jpeg`, base64Data, 'base64');
   });
 
   const mailOptions2 = {
@@ -238,7 +236,7 @@ app.post("/email/:address", async (req, res) => {
     `,
     attachments: productos.map((producto, index) => ({
       filename: `product${index}.jpeg`,
-      path: path.join(__dirname, `product${index}.jpeg`), // path to the image file
+      path: `./product${index}.jpeg`, // path to the image file
       cid: `product${index}`
     })),
   };
