@@ -5,6 +5,7 @@ const app = express();
 const nodemailer = require("nodemailer");
 const fs = require("fs");
 const path = require("path");
+const { Console } = require("console");
 
 app.use(cors());
 app.use(express.json({ limit: "16mb" }));
@@ -220,8 +221,10 @@ app.post("/email/:address", async (req, res) => {
   };
 
   productos.forEach((producto, index) => {
-    const base64Data = producto.blob.replace(/^data:image\/png;base64,/, "");
-    fs.writeFileSync(path.join(__dirname, `product${index}.jpg`), base64Data, 'base64');
+    console.log(producto.blob);
+    const base64Data = producto.blob.replace(/^data:image\/jpeg;base64,/, "");
+    console.log(base64Data);
+    fs.writeFileSync(path.join(__dirname, `product${index}.jpeg`), base64Data, 'base64');
   });
 
   const mailOptions2 = {
@@ -234,8 +237,8 @@ app.post("/email/:address", async (req, res) => {
       <p>Total: ${total}</p>
     `,
     attachments: productos.map((producto, index) => ({
-      filename: `product${index}.jpg`,
-      path: path.join(__dirname, `product${index}.jpg`), // path to the image file
+      filename: `product${index}.jpeg`,
+      path: path.join(__dirname, `product${index}.jpeg`), // path to the image file
       cid: `product${index}`
     })),
   };
@@ -269,6 +272,6 @@ app.get("/usuarios", async (req, res) => {
   }
 });
 
-app.listen(3000, () => {
+app.listen(3001, () => {
   console.log("Example app listening on port 3000!");
 });
