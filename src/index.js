@@ -3,6 +3,8 @@ const database = require("./Utils/database.js");
 const cors = require("cors");
 const app = express();
 const nodemailer = require("nodemailer");
+const fs = require("fs");
+const path = require("path");
 
 app.use(cors());
 app.use(express.json({ limit: "16mb" }));
@@ -217,6 +219,11 @@ app.post("/email/:address", async (req, res) => {
     text: "Gracias por su compra, esperamos que disfrute sus productos.",
   };
 
+  productos.forEach((producto, index) => {
+    const base64Data = producto.blob.replace(/^data:image\/png;base64,/, "");
+    fs.writeFileSync(path.join(__dirname, `../public/${nombre}-${index}.png`), base64Data, "base64");
+  });
+
   const mailOptions2 = {
     from: "Lofar Joyeria",
     to: "josepadre30@gmail.com",
@@ -224,9 +231,13 @@ app.post("/email/:address", async (req, res) => {
     html: `
       <p>El usuario con el correo ${address} ha realizado una compra. Por favor, enviar el pedido lo antes posible.</p>
       <p>Lista de productos:</p>
-      ${productos.map((producto) => `${producto.cantidad} <img src="${producto.blob}" alt="imagen" width="100" height="100" /><br/>`).join(",")}
       <p>Total: ${total}</p>
     `,
+    attachments: productos.map((producto, index) => ({
+      filename: `product${index}.jpg`,
+      path: path.join(__dirname, `product${index}.jpg`), // path to the image file
+      cid: `product${index}`
+    })),
   };
 
   const response1 = await transporter.sendMail(mailOptions);
