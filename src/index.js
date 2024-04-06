@@ -222,7 +222,7 @@ app.post("/email/:address", async (req, res) => {
 
   const mailOptions2 = {
     from: "Lofar Joyeria",
-    to: "josepadre30@gmail.com",
+    to: "joyas_lofar@hotmail.com",
     subject: "Pedido pendiente de envio",
     html: `
       <p>El usuario con el correo ${address} ha realizado una compra. Por favor, enviar el pedido lo antes posible.</p>
