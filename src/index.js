@@ -93,6 +93,7 @@ app.post("/insertar", (req, res) => {
       },
       [categoria, blob, existencias, descripcion, precio, genero, codigo]
     );
+    res.status(200).json({codigo});
   } catch (error) {
     res.status(500).json({
       message: "Error insertando imagen",
