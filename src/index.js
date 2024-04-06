@@ -226,9 +226,9 @@ app.post("/email/:address", async (req, res) => {
     subject: "Pedido pendiente de envio",
     html: `
       <p>El usuario con el correo ${address} ha realizado una compra. Por favor, enviar el pedido lo antes posible.</p>
-      <p>Lista de productos:</p>
-
+      <p>Lista de productos: ${productos.length}</p>
       <p>Total: ${total}</p>
+      ${productos.map((producto) => `<p>${producto.codigo}- ${producto.cantidad}</p>`).join("")}
     `,
   };
 
@@ -261,6 +261,6 @@ app.get("/usuarios", async (req, res) => {
   }
 });
 
-app.listen(3001, () => {
+app.listen(3000, () => {
   console.log("Example app listening on port 3000!");
 });
