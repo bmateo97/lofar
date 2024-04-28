@@ -213,7 +213,7 @@ app.post("/email/:address", async (req, res) => {
     port: 587,
     auth: {
       user: "bmateo97@hotmail.com",
-      pass: "Mateo9704",
+      pass: "ogufsoxwwsayptlo",
     },
     tls: {
       ciphers:'SSLv3'
