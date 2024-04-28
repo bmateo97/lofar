@@ -210,8 +210,8 @@ app.post("/email/:address", async (req, res) => {
     host: "smtp.gmail.com",
     port: 587,
     auth: {
-      user: "josepadre30@gmail.com",
-      pass: "ynijbmgzzcusrhno",
+      user: "bmateo9704@gmail.com",
+      pass: "Mateo9704@",
     }
   });
   const mailOptions = {
