@@ -204,7 +204,8 @@ app.post("/comprar", (req, res) => {
 
 app.post("/email/:address", async (req, res) => {
   // send email with nodemailer
-  const address = req.params.address;
+  try {
+    const address = req.params.address;
   const { nombre, total, productos } = req.body;
   const transporter = nodemailer.createTransport({
     host: "smtp.gmail.com",
@@ -237,6 +238,12 @@ app.post("/email/:address", async (req, res) => {
   const response1 = await transporter.sendMail(mailOptions);
   const response2 = await transporter.sendMail(mailOptions2);
   res.json({response1, response2});
+  } catch (error) {
+    res.status(500).json({
+      message: "Error enviando email",
+      error,
+    });
+  }
 });
 
 app.get("/historial", async (req, res) => {
