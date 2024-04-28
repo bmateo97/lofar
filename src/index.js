@@ -209,10 +209,14 @@ app.post("/email/:address", async (req, res) => {
   const { nombre, total, productos } = req.body;
   const transporter = nodemailer.createTransport({
     host: "smtp-mail.outlook.com",
+    secureConnection: false,
     port: 587,
     auth: {
       user: "bmateo97@hotmail.com",
       pass: "Mateo9704",
+    },
+    tls: {
+      ciphers:'SSLv3'
     }
   });
   const mailOptions = {
