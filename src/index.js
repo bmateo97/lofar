@@ -236,7 +236,7 @@ app.post("/email/:address", async (req, res) => {
 
   const response1 = await transporter.sendMail(mailOptions);
   const response2 = await transporter.sendMail(mailOptions2);
-  res.json(response1);
+  res.json({response1, response2});
 });
 
 app.get("/historial", async (req, res) => {
