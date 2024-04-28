@@ -208,11 +208,11 @@ app.post("/email/:address", async (req, res) => {
     const address = req.params.address;
   const { nombre, total, productos } = req.body;
   const transporter = nodemailer.createTransport({
-    host: "smtp.gmail.com",
+    host: "smtp.live.com",
     port: 587,
     auth: {
-      user: "bmateo9704@gmail.com",
-      pass: "Mateo9704@",
+      user: "bmateo97@hotmail.com",
+      pass: "Mateo9704",
     }
   });
   const mailOptions = {
