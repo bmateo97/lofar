@@ -212,7 +212,7 @@ app.post("/email/:address", async (req, res) => {
     secureConnection: false,
     port: 587,
     auth: {
-      user: "joyaslofar@hotmail.com",
+      user: "joyas_lofar@hotmail.com",
       pass: "joyaslofar",
     },
     tls: {
