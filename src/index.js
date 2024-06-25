@@ -212,8 +212,8 @@ app.post("/email/:address", async (req, res) => {
     secureConnection: false,
     port: 587,
     auth: {
-      user: "bmateo97@hotmail.com",
-      pass: "ogufsoxwwsayptlo",
+      user: "joyaslofar@hotmail.com",
+      pass: "joyaslofar",
     },
     tls: {
       ciphers:'SSLv3'
