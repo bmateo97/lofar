@@ -202,73 +202,53 @@ app.post("/comprar", (req, res) => {
   }
 });
 
-const nodemailer = require('nodemailer');
-
 app.post("/email/:address", async (req, res) => {
+  // send email with nodemailer
   try {
     const address = req.params.address;
-    const { nombre, total, productos } = req.body;
-
-    const transporter = nodemailer.createTransport({
-      host: "smtp-mail.outlook.com",
-      secure: false,
-      port: 587,
-      auth: {
-        user: "joyas_lofar@hotmail.com",
-        pass: "joyaslofar", // Ten en cuenta que exponer contraseñas en el código no es una práctica segura
-      },
-      tls: {
-        ciphers: 'SSLv3'
-      }
-    });
-
-    const mailOptions = {
-      from: '"Lofar Joyeria" <joyas_lofar@hotmail.com>',
-      to: address,
-      subject: "Compra realizada exitosamente",
-      html: `
-        <h1>Gracias por su compra, ${nombre}</h1>
-        <p>Esperamos que disfrute sus productos.</p>
-        <p>Total de su compra: $${total}</p>
-        <h2>Detalle de productos:</h2>
-        <ul>
-          ${productos.map(producto => `<li>${producto.codigo} - Cantidad: ${producto.cantidad}</li>`).join("")}
-        </ul>
-      `,
-    };
-
-    const mailOptions2 = {
-      from: '"Lofar Joyeria" <joyas_lofar@hotmail.com>',
-      to: "joyas_lofar@hotmail.com",
-      subject: "Pedido pendiente de envío",
-      html: `
-        <h1>Nuevo pedido recibido</h1>
-        <p>El usuario con el correo ${address} ha realizado una compra. Por favor, enviar el pedido lo antes posible.</p>
-        <p>Total de productos: ${productos.length}</p>
-        <p>Total de la compra: $${total}</p>
-        <h2>Detalle de productos:</h2>
-        <table>
-          <tr><th>Producto</th><th>Cantidad</th></tr>
-          ${productos.map((producto) => `<tr><td>${producto.codigo}</td><td>${producto.cantidad}</td></tr>`).join("")}
-        </table>
-      `,
-    };
-
-    const [response1, response2] = await Promise.all([
-      transporter.sendMail(mailOptions),
-      transporter.sendMail(mailOptions2)
-    ]);
-
-    console.log('Emails enviados:', response1.messageId, response2.messageId);
-    res.status(200).json({ message: "Emails enviados exitosamente" });
+  const { nombre, total, productos } = req.body;
+  const transporter = nodemailer.createTransport({
+    host: "smtp-mail.outlook.com",
+    secure: false,
+    port: 587,
+    auth: {
+      user: "joyas_lofar@hotmail.com",
+      pass: "joyaslofar",
+    },
+    tls: {
+      ciphers:'SSLv3'
+    }
+  });
+  const mailOptions = {
+    from: "Lofar Joyeria",
+    to: address,
+    subject: "Compra realizada exitosamente",
+    text: "Gracias por su compra, esperamos que disfrute sus productos.",
+  };
+  const mailOptions2 = {
+    from: "Lofar Joyeria",
+    to: "joyas_lofar@hotmail.com",
+    subject: "Pedido pendiente de envio",
+    html: 
+      <p>El usuario con el correo ${address} ha realizado una compra. Por favor, enviar el pedido lo antes posible.</p>
+      <p>Lista de productos: ${productos.length}</p>
+      <p>Total: ${total}</p>
+      <p>Productos   | Cantidad</p>
+      ${productos.map((producto) => <p>${producto.codigo} |     ${producto.cantidad}</p>).join("")}
+    ,
+  };
+  const response1 = await transporter.sendMail(mailOptions);
+  const response2 = await transporter.sendMail(mailOptions2);
+  res.json({response1, response2});
   } catch (error) {
-    console.error('Error al enviar los emails:', error);
     res.status(500).json({
       message: "Error enviando email",
-      error: error.message,
+      error,
     });
   }
 });
+
+Ed
 app.get("/historial", async (req, res) => {
   try {
     database("CALL historial();", (result) => {
