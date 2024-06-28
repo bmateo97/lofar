@@ -209,7 +209,7 @@ app.post("/email/:address", async (req, res) => {
   const { nombre, total, productos } = req.body;
   const transporter = nodemailer.createTransport({
     host: "smtp-mail.outlook.com",
-    secure: false,
+    secureConnection: false,
     port: 587,
     auth: {
       user: "joyas_lofar@hotmail.com",
@@ -248,7 +248,6 @@ app.post("/email/:address", async (req, res) => {
   }
 });
 
-Ed
 app.get("/historial", async (req, res) => {
   try {
     database("CALL historial();", (result) => {
