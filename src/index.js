@@ -215,9 +215,7 @@ app.post("/email/:address", async (req, res) => {
       user: "bmateo97@hotmail.com",
       pass: "ogufsoxwwsayptlo",
     },
-    tls: {
-      ciphers:'SSLv3'
-    }
+    tls: { }
   });
   const mailOptions = {
     from: "Lofar Joyeria",
@@ -243,12 +241,20 @@ app.post("/email/:address", async (req, res) => {
   const response2 = await transporter.sendMail(mailOptions2);
   res.json({response1, response2});
   } catch (error) {
+    console.error("Error enviando email:", error);
     res.status(500).json({
       message: "Error enviando email",
       error,
     });
   }
 });
+
+
+
+
+
+
+
 app.get("/historial", async (req, res) => {
   try {
     database("CALL historial();", (result) => {
