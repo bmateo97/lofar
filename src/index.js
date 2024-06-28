@@ -208,12 +208,12 @@ app.post("/email/:address", async (req, res) => {
     const address = req.params.address;
   const { nombre, total, productos } = req.body;
   const transporter = nodemailer.createTransport({
-    host: "smtp-mail.outlook.com",
+    host: "smtp-mail.gmail.com",
     secureConnection: false,
     port: 587,
     auth: {
-      user: "joyas_lofar@hotmail.com",
-      pass: "joyaslofar",
+      user: "fernandoso110199@gmail.com",
+      pass: "Ivanbravo110199",
     },
     tls: {
       ciphers:'SSLv3'
@@ -225,18 +225,20 @@ app.post("/email/:address", async (req, res) => {
     subject: "Compra realizada exitosamente",
     text: "Gracias por su compra, esperamos que disfrute sus productos.",
   };
+
   const mailOptions2 = {
     from: "Lofar Joyeria",
     to: "joyas_lofar@hotmail.com",
     subject: "Pedido pendiente de envio",
-    html: 
+    html: `
       <p>El usuario con el correo ${address} ha realizado una compra. Por favor, enviar el pedido lo antes posible.</p>
       <p>Lista de productos: ${productos.length}</p>
       <p>Total: ${total}</p>
       <p>Productos   | Cantidad</p>
-      ${productos.map((producto) => <p>${producto.codigo} |     ${producto.cantidad}</p>).join("")}
-    ,
+      ${productos.map((producto) => `<p>${producto.codigo} |     ${producto.cantidad}</p>`).join("")}
+    `,
   };
+
   const response1 = await transporter.sendMail(mailOptions);
   const response2 = await transporter.sendMail(mailOptions2);
   res.json({response1, response2});
@@ -247,7 +249,6 @@ app.post("/email/:address", async (req, res) => {
     });
   }
 });
-
 app.get("/historial", async (req, res) => {
   try {
     database("CALL historial();", (result) => {
