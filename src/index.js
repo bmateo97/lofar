@@ -202,7 +202,7 @@ app.post("/comprar", (req, res) => {
   }
 });
 
-const nodemailer = require('nodemailer');
+
 app.post("/email/:address", async (req, res) => {
   // send email with nodemailer
   try {
