@@ -202,6 +202,7 @@ app.post("/comprar", (req, res) => {
   }
 });
 
+const nodemailer = require('nodemailer');
 app.post("/email/:address", async (req, res) => {
   // send email with nodemailer
   try {
@@ -209,13 +210,13 @@ app.post("/email/:address", async (req, res) => {
   const { nombre, total, productos } = req.body;
   const transporter = nodemailer.createTransport({
     host: "smtp-mail.outlook.com",
-    secureConnection: false,
     port: 587,
+    secure: false,
     auth: {
       user: "bmateo97@hotmail.com",
       pass: "ogufsoxwwsayptlo",
     },
-    tls: { }
+    tls: {}
   });
   const mailOptions = {
     from: "Lofar Joyeria",
