@@ -245,7 +245,7 @@ app.post("/email/:address", async (req, res) => {
     console.error("Error enviando email:", error);
     res.status(500).json({
       message: "Error enviando email",
-      error,
+      error: error.message,
     });
   }
 });
