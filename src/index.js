@@ -226,10 +226,11 @@ app.post("/email/:address", async (req, res) => {
     from: "Lofar Joyeria <bmateo97@hotmail.com> ",
     to: address,
     subject: "Compra realizada exitosamente",
-    text: <p>Gracias ${address} por su compra, esperamos que disfrute sus productos.</p>
+    html:  ` <p>Gracias ${address} por su compra, esperamos que disfrute sus productos.</p>
       <p>Lista de Productos: ${productos.length}</p>
     <p> Codigo de los productos | Cantidad de productos </p>
-    <p>Total:$ ${total} </p>,
+    <p>Total:$ ${total} </p>
+    `,
   };
 
   const mailOptions2 = {
