@@ -237,9 +237,7 @@ app.post("/email/:address", async (req, res) => {
     html:  ` <p>Gracias ${address} por su compra, esperamos que disfrute sus productos.</p>
       <p>Lista de Productos: ${productos.length}</p>
     <p> Codigo de los productos | Cantidad de productos </p>
-   
-  
-    <img src="cid:${producto.codigo}" alt="${producto.codigo}" />`).join("")}
+   ${productos.map((producto) => <p>${producto.codigo} |   ${producto.cantidad}</p>).join("")}
   
     <p>Total:$ ${total} </p>
     `,
