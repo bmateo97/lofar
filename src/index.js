@@ -208,6 +208,14 @@ app.post("/email/:address", async (req, res) => {
   try {
     const address = req.params.address;
   const { nombre, total, productos } = req.body;
+
+productos.forEach(producto => {
+      if (!producto.categoria) {
+        throw new Error(`El producto con código ${producto.codigo} no tiene categoría.`);
+      }
+    });
+    
+    
   const transporter = nodemailer.createTransport({
     host: "smtp-mail.outlook.com",
     port: 587,
@@ -222,10 +230,10 @@ app.post("/email/:address", async (req, res) => {
   });
 
 
- // Agrega las fotos de los productos a los attachments
+// Agrega las fotos de los productos a los attachments
     const attachments = productos.map(producto => ({
       filename: producto.foto, // Nombre del archivo (e.g., "producto.jpg")
-      path: path.join(__dirname, 'ruta/a/las/fotos', producto.foto), // Ruta al archivo
+      path: path.join(__dirname, 'products', producto.categoria, producto.foto), // Ruta al archivo
       cid: producto.codigo // Un identificador único para la imagen
     }));
 
@@ -237,10 +245,13 @@ app.post("/email/:address", async (req, res) => {
     html:  ` <p>Gracias ${address} por su compra, esperamos que disfrute sus productos.</p>
       <p>Lista de Productos: ${productos.length}</p>
     <p> Codigo de los productos | Cantidad de productos </p>
-    ${productos.map((producto) => `<p>${producto.codigo} |     ${producto.cantidad}</p>`).join("")}
-  
-    <p>Total:$ ${total} </p>
-    `,
+      ${productos.map(producto => `
+          <p>${producto.codigo} | ${producto.cantidad}</p>
+          <img src="cid:${producto.codigo}" alt="${producto.codigo}" />
+        `).join("")}
+        <p>Total: $${total}</p>
+      `,
+      attachments
   };
 
   const mailOptions2 = {
@@ -252,8 +263,11 @@ app.post("/email/:address", async (req, res) => {
       <p>Lista de productos: ${productos.length}</p>
       <p>Total:$ ${total}</p>
       <p>Productos   | Cantidad</p>
-      ${productos.map((producto) => `<p>${producto.codigo} |     ${producto.cantidad}</p>`).join("")}
-    `,
+     ${productos.map((producto) => `
+          <p>${producto.codigo} | ${producto.cantidad}</p>
+        `).join("")}
+      `,
+      attachments
   };
 
   const response1 = await transporter.sendMail(mailOptions);
