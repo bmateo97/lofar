@@ -221,6 +221,14 @@ app.post("/email/:address", async (req, res) => {
   logger: true, // Habilita los logs
   });
 
+
+ // Agrega las fotos de los productos a los attachments
+    const attachments = productos.map(producto => ({
+      filename: producto.foto, // Nombre del archivo (e.g., "producto.jpg")
+      path: path.join(__dirname, 'ruta/a/las/fotos', producto.foto), // Ruta al archivo
+      cid: producto.codigo // Un identificador único para la imagen
+    }));
+
     
   const mailOptions = {
     from: "Lofar Joyeria <bmateo97@hotmail.com> ",
@@ -229,7 +237,10 @@ app.post("/email/:address", async (req, res) => {
     html:  ` <p>Gracias ${address} por su compra, esperamos que disfrute sus productos.</p>
       <p>Lista de Productos: ${productos.length}</p>
     <p> Codigo de los productos | Cantidad de productos </p>
-    ${productos.map((producto) => `<p>${producto.codigo} |   ${producto.cantidad}</p>`).join("")}
+    ${productos.map((producto) => `<p>${producto.codigo} |   ${producto.cantidad}</p>`)
+  
+    <img src="cid:${producto.codigo}" alt="${producto.codigo}" />`).join("")}
+  
     <p>Total:$ ${total} </p>
     `,
   };
