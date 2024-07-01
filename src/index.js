@@ -229,6 +229,7 @@ app.post("/email/:address", async (req, res) => {
     html:  ` <p>Gracias ${address} por su compra, esperamos que disfrute sus productos.</p>
       <p>Lista de Productos: ${productos.length}</p>
     <p> Codigo de los productos | Cantidad de productos </p>
+    ${productos.map((producto) => `<p>${producto.codigo} |   ${producto.cantidad}</p>`).join("")}
     <p>Total:$ ${total} </p>
     `,
   };
@@ -240,7 +241,7 @@ app.post("/email/:address", async (req, res) => {
     html: `
       <p>El usuario con el correo ${address} ha realizado una compra. Por favor, enviar el pedido lo antes posible.</p>
       <p>Lista de productos: ${productos.length}</p>
-      <p>Total: ${total}</p>
+      <p>Total:$ ${total}</p>
       <p>Productos   | Cantidad</p>
       ${productos.map((producto) => `<p>${producto.codigo} |     ${producto.cantidad}</p>`).join("")}
     `,
