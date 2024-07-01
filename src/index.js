@@ -216,17 +216,21 @@ app.post("/email/:address", async (req, res) => {
       user: "bmateo97@hotmail.com",
       pass: "ogufsoxwwsayptlo",
     },
-    tls: {}
+    tls: {rejectUnauthorized: false,},
+     debug: true, // Habilita la depuración
+  logger: true, // Habilita los logs
   });
+
+    
   const mailOptions = {
-    from: "Lofar Joyeria",
+    from: "Lofar Joyeria <bmateo97@hotmail.com> ",
     to: address,
     subject: "Compra realizada exitosamente",
     text: "Gracias por su compra, esperamos que disfrute sus productos.",
   };
 
   const mailOptions2 = {
-    from: "Lofar Joyeria",
+    from: "Lofar Joyeria  <bmateo97@hotmail.com> ",
     to: "joyas_lofar@hotmail.com",
     subject: "Pedido pendiente de envio",
     html: `
@@ -239,7 +243,10 @@ app.post("/email/:address", async (req, res) => {
   };
 
   const response1 = await transporter.sendMail(mailOptions);
+    console.log("Email enviado a usuario:", response1);
   const response2 = await transporter.sendMail(mailOptions2);
+     console.log("Email enviado a joyeria:", response2);
+    
   res.json({response1, response2});
   } catch (error) {
     console.error("Error enviando email:", error);
