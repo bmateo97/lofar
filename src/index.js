@@ -208,6 +208,7 @@ app.post("/email/:address", async (req, res) => {
   try {
     const address = req.params.address;
   const { nombre, total, productos } = req.body;
+    const telefono = req.params.telefono;
 
   const transporter = nodemailer.createTransport({
     host: "smtp-mail.outlook.com",
