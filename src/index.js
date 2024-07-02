@@ -13,7 +13,7 @@ app.use(express.urlencoded({ extended: true, limit: "16mb" }));
 
 app.post("/ingresar", (req, res) => {
   try {
-    const { usuario, contrasena } = req.body;
+    const { Correo, contrasena } = req.body;
     database(
       "CALL ingresar(?, ?);",
       (result) => {
@@ -22,7 +22,7 @@ app.post("/ingresar", (req, res) => {
           message: "Usuario no encontrado",
         });
       },
-      [Correo, contrasena]
+      [usuario, contrasena]
     );
   } catch (error) {
     console.log(error);
