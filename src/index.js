@@ -13,7 +13,7 @@ app.use(express.urlencoded({ extended: true, limit: "16mb" }));
 
 app.post("/ingresar", (req, res) => {
   try {
-    const { Correo, contrasena } = req.body;
+    const { usuario, contrasena } = req.body;
     database(
       "CALL ingresar(?, ?);",
       (result) => {
