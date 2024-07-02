@@ -22,7 +22,7 @@ app.post("/ingresar", (req, res) => {
           message: "Usuario no encontrado",
         });
       },
-      [usuario, contrasena]
+      [Correo, contrasena]
     );
   } catch (error) {
     console.log(error);
