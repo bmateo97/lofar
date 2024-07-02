@@ -229,7 +229,7 @@ app.post("/email/:address", async (req, res) => {
     from: "Lofar Joyeria <bmateo97@hotmail.com> ",
     to: address,
     subject: "Compra realizada exitosamente",
-    html:  ` <p>Gracias ${address} por su compra, esperamos que disfrute sus productos.</p>
+    html:  ` <p>Gracias ${address} nos pondremos en contacto contigo para confirmar tu pedido y el pago a realizarse. </p>
       <p>Lista de Productos: ${productos.length}</p>
     <p> Codigo de los productos | Cantidad de productos </p>
       ${productos.map(producto => `
@@ -244,7 +244,7 @@ app.post("/email/:address", async (req, res) => {
     to: "joyerialofar@gmail.com",
     subject: "Pedido pendiente de envio",
     html: `
-      <p>El usuario con el correo ${address} ha realizado una compra. Por favor, enviar el pedido lo antes posible.</p>
+      <p>El usuario con el correo ${address} ha realizado una compra. Por favor, contactarse lo más pronto posible  ${telefono}.</p>
       <p>Lista de productos: ${productos.length}</p>
       <p>Total:$ ${total}</p>
       <p>Productos   | Cantidad</p>
