@@ -29,3 +29,4 @@ function database(query, callback, args = []) {
 }
 
 module.exports = database;
+
