@@ -27,7 +27,7 @@ app.post("/ingresar", (req, res) => {
   } catch (error) {
     console.log(error);
     res.status(500).json({
-      message: "Error al iniciando sesion",
+      message: "Error al iniciar sesion",
       error,
     });
   }
